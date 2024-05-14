@@ -204,10 +204,9 @@ func TestConversion(t *testing.T) {
 	}
 }
 
-func testPointConversionVectors() []ConversionVector {
+func testPointConversionVectors(numCvs int) []ConversionVector {
 	r := rand.New(rand.NewSource(54321))
 
-	numCvs := 50
 	cvs := make([]ConversionVector, numCvs)
 	for i := 0; i < numCvs; i++ {
 		bIn := new([32]byte)
@@ -289,7 +288,7 @@ func TestPointConversion(t *testing.T) {
 
 	curve := Edwards()
 
-	for _, vector := range testPointConversionVectors() {
+	for _, vector := range testPointConversionVectors(50) {
 		x, y, err := curve.encodedBytesToBigIntPoint(vector.bIn)
 		// The random point wasn't on the curve.
 		if err != nil {

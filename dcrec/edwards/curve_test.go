@@ -15,10 +15,9 @@ type XRecoveryVector struct {
 	bIn *[32]byte
 }
 
-func testPointXRecoveryVectors() []XRecoveryVector {
+func testPointXRecoveryVectors(numCvs int) []XRecoveryVector {
 	r := rand.New(rand.NewSource(54321))
 
-	numCvs := 1000
 	cvs := make([]XRecoveryVector, numCvs)
 	for i := 0; i < numCvs; i++ {
 		bIn := new([32]byte)
@@ -42,7 +41,7 @@ func testPointXRecoveryVectors() []XRecoveryVector {
 func TestXRecovery(t *testing.T) {
 	curve := Edwards()
 
-	for _, vector := range testPointXRecoveryVectors() {
+	for _, vector := range testPointXRecoveryVectors(1000) {
 		isNegative := vector.bIn[31]>>7 == 1
 		notOnCurve := false
 		_, y, err := curve.encodedBytesToBigIntPoint(vector.bIn)
@@ -114,7 +113,7 @@ func TestAdd(t *testing.T) {
 		"b3c815edc658038e31fef3e08190bfdfc63640df5e3b490fb50421cc0380bc21",
 	}
 	curve := Edwards()
-	tpcv := testPointConversionVectors()
+	tpcv := testPointConversionVectors(50)
 
 	for i := range tpcv {
 		if i == 0 {
